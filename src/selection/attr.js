@@ -36,6 +36,18 @@ function d3_selection_attr(name, value) {
 
   // For attr(string, string), set the attribute with the specified name.
   function attrConstant() {
+    //Check if using Polymer and ShadyDom
+    var shadyDom = Polymer && (typeof Polymer.dom === 'function');
+    if(shadyDom && (name.toLowerCase() === 'class')) {
+      var node = this;
+      for (; node; node = node.parentNode) {
+        if (node.tagName.indexOf('-') > -1) {
+          value += ' scope-style ' + node.tagName.toLowerCase();
+          break;
+        }
+      }
+    }
+
     this.setAttribute(name, value);
   }
   function attrConstantNS() {
