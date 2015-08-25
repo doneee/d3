@@ -662,17 +662,17 @@
       this.removeAttributeNS(name.space, name.local);
     }
     function attrConstant() {
-      var shadyDom = Polymer && typeof Polymer.dom === "function";
-      if (shadyDom && name.toLowerCase() === "class") {
+      var append = "";
+      if (Polymer && name.toLowerCase() === "class") {
         var node = this;
         for (;node; node = node.parentNode) {
-          if (node.tagName.indexOf("-") > -1) {
-            value += " scope-style " + node.tagName.toLowerCase();
+          if (typeof node.tagName !== "undefined" && node.tagName.indexOf("-") > -1) {
+            append = " scope-style " + node.tagName.toLowerCase();
             break;
           }
         }
       }
-      this.setAttribute(name, value);
+      this.setAttribute(name, value + append);
     }
     function attrConstantNS() {
       this.setAttributeNS(name.space, name.local, value);
@@ -810,10 +810,9 @@
     }) : this.node().innerHTML;
   };
   d3_selectionPrototype.append = function(name) {
-    var shadyDom = Polymer && typeof Polymer.dom === "function";
     name = d3_selection_creator(name);
     return this.select(function() {
-      return shadyDom ? Polymer.dom(this).appendChild(name.apply(this, arguments)) : this.appendChild(name.apply(this, arguments));
+      return Polymer ? Polymer.dom(this).appendChild(name.apply(this, arguments)) : this.appendChild(name.apply(this, arguments));
     });
   };
   function d3_selection_creator(name) {

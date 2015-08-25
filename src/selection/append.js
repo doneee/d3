@@ -2,12 +2,9 @@ import "../core/ns";
 import "selection";
 
 d3_selectionPrototype.append = function(name) {
-  //Check if using Polymer and ShadyDom
-  var shadyDom = Polymer && (typeof Polymer.dom === 'function');
   name = d3_selection_creator(name);
   return this.select(function() {
-    return (shadyDom ? Polymer.dom(this).appendChild(name.apply(this, arguments)) :
-      this.appendChild(name.apply(this, arguments)));
+    return Polymer ? Polymer.dom(this).appendChild(name.apply(this, arguments)) : this.appendChild(name.apply(this, arguments));
   });
 };
 
